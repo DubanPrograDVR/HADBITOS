@@ -1,4 +1,10 @@
 :root {
+  --verde-principal: #4cb34c;
+  --verde-oscuro: #3d8f3d;
+  --color-primario: #2c3e50;
+  --color-secundario: #34495e;
+  --fondo-claro: #f8f9f9;
+  --blanco: #ffffff;
   --fuentePrincipal: "Roboto", sans-serif;
   --fuenteSecundaria: "Lato", sans-serif;
   --separacion: 5rem;
@@ -18,7 +24,9 @@ html {
 body {
   font-family: var(--fuentePrincipal);
   font-size: 1.6rem;
-  line-height: 1.5;
+  line-height: 1.8;
+  color: var(--color-secundario);
+  background-color: var(--fondo-claro);
 }
 
 /* Globales */
@@ -31,9 +39,10 @@ body {
 h1,
 h2,
 h3 {
-  font-weight: 900;
   font-family: var(--fuenteSecundaria);
-  margin: calc(var(--separacion / 2));
+  color: var(--color-primario);
+  font-weight: 900;
+  margin: calc(var(--separacion / 2)) 0;
 }
 
 h1 {
@@ -54,70 +63,99 @@ img {
   height: auto;
 }
 
-/* Utilidades */
-
-.text-center {
-  text-align: center;
+/* Header y Titulo Principal */
+.header {
+  background-color: var(--blanco);
+  padding: 1.5rem 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.grosor-text-delgado {
-  font-weight: 300;
+.titulo-principal span {
+  color: var(--verde-principal);
 }
 
-.grosor-text-mediano {
-  font-weight: 500;
-}
-
-.tamaño-text-parrafo {
-  font-size: 2rem;
-}
-
-.hero {
-  background-image: url(../img/habitos.jpg);
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  height: 60vh;
-}
-
-.div-hero {
-  padding: 3rem;
-  margin: 2rem;
-}
-
-.texto-hero {
-  font-size: 2.2rem;
+/* Barra de Navegación */
+.contenedor-navegacion {
+  background-color: var(--blanco);
+  border-bottom: 1px solid #e1e1e1;
 }
 
 .navbar {
   display: flex;
-  justify-content: flex-end;
-  padding: 1rem;
-  margin-top: 1rem;
-}
-
-.navbar a {
-  margin-right: 1rem;
-  border-bottom: 1px solid rgb(16, 16, 176);
-  text-decoration: none;
-  color: #000;
+  justify-content: center;
+  gap: 3rem;
+  padding: 1.5rem 0;
+  margin: 0;
 }
 
 .navbar li {
-  font-size: 2.3rem;
   list-style: none;
-  margin-right: 1rem;
-  text-decoration: none;
 }
 
+.navbar a {
+  text-decoration: none;
+  color: var(--color-secundario);
+  font-size: 1.8rem;
+  font-weight: 700;
+  padding-bottom: 0.5rem;
+  transition: color 0.3s ease, border-color 0.3s ease;
+  border-bottom: 2px solid transparent;
+}
+
+.navbar a:hover {
+  color: var(--verde-principal);
+  border-bottom-color: var(--verde-principal);
+}
+
+/* Hero Section */
+.hero {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url(../img/habitos.jpg);
+  background-size: cover;
+  background-position: center;
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: var(--blanco);
+}
+
+.div-hero {
+  padding: 0 2rem;
+  margin: 0;
+  max-width: 80rem;
+}
+
+.div-hero h2 {
+  color: var(--blanco);
+  font-size: 4.2rem;
+}
+
+.texto-hero {
+  font-size: 2rem;
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+/* Botones */
 .btn {
-  padding: 1rem;
+  padding: 1.5rem 3rem;
   border: none;
-  color: #fff;
-  border-radius: 0.5rem;
-  font-size: 1.5rem;
-  background-color: rgb(76, 179, 76);
+  color: var(--blanco);
+  border-radius: 5px;
+  font-size: 1.8rem;
+  font-weight: 700;
+  background-color: var(--verde-principal);
   cursor: pointer;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
+  margin-top: 2rem;
+}
+
+.btn:hover {
+  background-color: var(--verde-oscuro);
 }
 
 .boton-agregar {
@@ -126,68 +164,130 @@ img {
   padding: 4rem;
 }
 
-a:hover {
-  color: rgb(16, 16, 176);
+/* Secciones y Tarjetas */
+.seccion-items {
+  margin-top: var(--separacion);
+  padding: var(--separacion) 2rem;
+  background-color: var(--blanco);
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e1e1e1;
+}
+
+.seccion-items .decorar-titulos {
+  text-decoration: none;
 }
 
 .flex-padre {
   display: flex;
   justify-content: center;
   gap: 2rem;
+  flex-wrap: wrap; /* Para mejorar la responsividad */
 }
 
-.elemento {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border: 1px solid black;
+.elemento-fisico,
+.elemento,
+.elemento-habito {
+  background-color: var(--fondo-claro);
+  padding: 2.5rem;
+  border: 1px solid #e1e1e1;
   border-radius: 1rem;
-  padding: 2rem;
+  box-shadow: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
 }
 
-.elemento p {
+.elemento-fisico:hover,
+.elemento:hover,
+.elemento-habito:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.07);
+}
+
+.elemento-fisico i,
+.elemento i,
+.elemento-habito i {
+  font-size: 3.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--verde-principal);
+}
+
+.texto-cajas {
   font-size: 1.8rem;
-  font-weight: 400;
+  font-weight: 500;
+  color: var(--color-primario);
+  text-decoration: none;
 }
 
-.elemento h3 {
-  font-weight: 400;
-}
-
-.seccion-items {
-  margin-top: 3rem;
-  padding: 4rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border: 1px solid #333;
-  border-radius: 1rem;
-}
-
-i {
-  font-size: 30px;
-  color: rgb(76, 179, 76);
-}
-
-.contenedor h2 {
-  font-weight: 400;
-}
-
-.malos-habitos-fisicos {
-  display: flex;
-  justify-content: space-around;
-}
-
+/* Contenedores de tarjetas */
+.malos-habitos-fisicos,
 .texto-disciplina {
   display: flex;
   justify-content: center;
   gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+/* Lista de Consejos */
+.lista-consejos {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.lista-consejos li {
+  font-size: 1.8rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.lista-consejos i {
+  color: var(--verde-principal);
+  font-size: 2rem;
+}
+
+/* Seccion CTA (Call to Action) */
+.seccion-cta {
+  margin-top: var(--separacion);
+  padding: var(--separacion) 0;
   text-align: center;
 }
 
-.elemento-habito {
-  border: 1px solid black;
-  padding: 0.5rem;
-  border-radius: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.seccion-cta h2 {
+  font-size: 3.2rem;
+}
+.seccion-cta p {
+  font-size: 1.8rem;
+  max-width: 60rem;
+  margin: 1rem auto;
 }
 
-.elemento-habito i {
-  margin-top: 1rem;
+/* Footer */
+.footer {
+  margin-top: var(--separacion);
+  background-color: var(--color-primario);
+  padding: 3rem 0;
+  color: var(--blanco);
+}
+
+.footer p {
+  margin: 0;
+  font-size: 1.6rem;
+  text-align: center;
+}
+
+/* Utilidades (se mantienen por si se usan en otras páginas) */
+.text-center {
+  text-align: center;
+}
+
+.tamaño-text-parrafo {
+  font-size: 2rem;
 }
