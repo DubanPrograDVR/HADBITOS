@@ -60,6 +60,18 @@ img {
   text-align: center;
 }
 
+.grosor-text-delgado {
+  font-weight: 300;
+}
+
+.grosor-text-mediano {
+  font-weight: 500;
+}
+
+.tamaño-text-parrafo {
+  font-size: 2rem;
+}
+
 .hero {
   background-image: url(../img/habitos.jpg);
   background-size: cover;
@@ -151,4 +163,31 @@ a:hover {
 i {
   font-size: 30px;
   color: rgb(76, 179, 76);
+}
+
+.contenedor h2 {
+  font-weight: 400;
+}
+
+.malos-habitos-fisicos {
+  display: flex;
+  justify-content: space-around;
+}
+
+.texto-disciplina {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  text-align: center;
+}
+
+.elemento-habito {
+  border: 1px solid black;
+  padding: 0.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.elemento-habito i {
+  margin-top: 1rem;
 }
