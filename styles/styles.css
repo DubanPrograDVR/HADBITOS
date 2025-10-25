@@ -168,6 +168,204 @@ img {
   left: 0;
 }
 
+/* Menú de Usuario */
+.user-menu {
+  position: relative;
+}
+
+.user-avatar {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  background: linear-gradient(135deg, var(--verde-principal), var(--azul-acento));
+  padding: 0.3rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  max-width: 100%;
+  margin: 0;
+  display: block;
+}
+
+.user-avatar:hover {
+  transform: scale(1.1);
+  box-shadow: var(--sombra-media);
+}
+
+.user-avatar:active {
+  transform: scale(1.05);
+}
+
+.user-status {
+  position: absolute;
+  bottom: 0.2rem;
+  right: 0.2rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  background: #10b981;
+  border: 2px solid var(--blanco);
+  border-radius: 50%;
+  animation: pulse-status 2s ease-in-out infinite;
+}
+
+@keyframes pulse-status {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 1rem);
+  right: 0;
+  width: 28rem;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
+  border-radius: 1.5rem;
+  box-shadow: var(--sombra-grande);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.dropdown-menu.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-header {
+  padding: 2rem;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.1));
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.dropdown-avatar {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--verde-principal);
+  flex-shrink: 0;
+}
+
+.dropdown-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  max-width: 100%;
+  margin: 0;
+  display: block;
+}
+
+.dropdown-user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.user-name {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-primario);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-email {
+  font-size: 1.3rem;
+  color: var(--color-secundario);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dropdown-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.2), transparent);
+  margin: 0.5rem 0;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem 2rem;
+  color: var(--color-primario);
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.dropdown-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0.4rem;
+  height: 100%;
+  background: linear-gradient(180deg, var(--verde-principal), var(--azul-acento));
+  transform: scaleY(0);
+  transition: transform 0.3s ease;
+}
+
+.dropdown-item:hover {
+  background: rgba(16, 185, 129, 0.05);
+  padding-left: 2.5rem;
+}
+
+.dropdown-item:hover::before {
+  transform: scaleY(1);
+}
+
+.dropdown-item i {
+  font-size: 1.8rem;
+  width: 2rem;
+  text-align: center;
+  background: linear-gradient(135deg, var(--verde-principal), var(--azul-acento));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.dropdown-item-danger {
+  color: #ef4444;
+}
+
+.dropdown-item-danger:hover {
+  background: rgba(239, 68, 68, 0.05);
+}
+
+.dropdown-item-danger i {
+  background: #ef4444;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 /* Hero Section */
 .hero {
   background: linear-gradient(
@@ -658,6 +856,16 @@ img {
     padding: 1rem 2rem;
     font-size: 1.6rem;
   }
+  
+  .user-avatar {
+    width: 4rem;
+    height: 4rem;
+  }
+  
+  .dropdown-menu {
+    width: 26rem;
+    right: -1rem;
+  }
 
   .div-hero h2 {
     font-size: 3.5rem;
@@ -720,6 +928,29 @@ img {
   .navbar {
     flex-direction: column;
     gap: 1rem;
+  }
+  
+  .user-menu {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .user-avatar {
+    width: 4.5rem;
+    height: 4.5rem;
+  }
+  
+  .dropdown-menu {
+    width: 90vw;
+    max-width: 32rem;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%) translateY(-10px);
+  }
+  
+  .dropdown-menu.show {
+    transform: translateX(-50%) translateY(0);
   }
 
   .navbar a {

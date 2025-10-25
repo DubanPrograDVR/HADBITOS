@@ -43,4 +43,41 @@ window.addEventListener("scroll", () => {
 // Inicializar cuando el DOM esté cargado
 document.addEventListener("DOMContentLoaded", () => {
   observarElementos();
+  inicializarMenuUsuario();
 });
+
+// Funcionalidad del menú de usuario
+const inicializarMenuUsuario = () => {
+  const userAvatarBtn = document.getElementById('user-avatar-btn');
+  const userDropdown = document.getElementById('user-dropdown');
+  
+  if (!userAvatarBtn || !userDropdown) return;
+  
+  // Toggle del menú al hacer click en el avatar
+  userAvatarBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    userDropdown.classList.toggle('show');
+  });
+  
+  // Cerrar menú al hacer click fuera
+  document.addEventListener('click', (e) => {
+    if (!userDropdown.contains(e.target) && e.target !== userAvatarBtn) {
+      userDropdown.classList.remove('show');
+    }
+  });
+  
+  // Cerrar menú al hacer click en un item
+  const dropdownItems = userDropdown.querySelectorAll('.dropdown-item');
+  dropdownItems.forEach(item => {
+    item.addEventListener('click', () => {
+      userDropdown.classList.remove('show');
+    });
+  });
+  
+  // Cerrar menú con tecla Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && userDropdown.classList.contains('show')) {
+      userDropdown.classList.remove('show');
+    }
+  });
+};
