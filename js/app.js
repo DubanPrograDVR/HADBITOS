@@ -1,20 +1,158 @@
-let habitos = [];
-let habitoAEliminar = null;
-let habitoEnEdicion = null;
+// ============================================================================
+// ESTADO DE LA APLICACIÓN
+// ============================================================================
 
-// Actualizar estadísticas
-const actualizarEstadisticas = () => {
-  const totalHabitos = habitos.length;
-  const completadosHoy = habitos.filter(h => h.completadoHoy).length;
-  
-  const totalHabitosEl = document.getElementById('total-habitos');
-  const totalCompletadosEl = document.getElementById('total-completados');
-  
-  if (totalHabitosEl) totalHabitosEl.textContent = totalHabitos;
-  if (totalCompletadosEl) totalCompletadosEl.textContent = completadosHoy;
+let habitos = [];
+let habitoEnEdicion = null;
+let habitoAEliminar = null;
+
+// ============================================================================
+// FUNCIONES DE ALMACENAMIENTO (LocalStorage)
+// ============================================================================
+
+const guardarHabitos = () => {
+  localStorage.setItem("misHabitosApp", JSON.stringify(habitos));
 };
 
-const renderizar_habito = () => {
+const cargarHabitos = () => {
+  const datosGuardados = localStorage.getItem("misHabitosApp");
+  if (datosGuardados) {
+    habitos = JSON.parse(datosGuardados);
+  }
+};
+
+// ============================================================================
+// FUNCIONES DE INTERFAZ - ESTADÍSTICAS
+// ============================================================================
+
+const actualizarEstadisticas = () => {
+  const totalHabitos = habitos.length;
+  const habitosCompletados = habitos.filter(habito => habito.completadoHoy).length;
+  
+  const elementoTotalHabitos = document.getElementById('total-habitos');
+  const elementoCompletados = document.getElementById('total-completados');
+  
+  if (elementoTotalHabitos) elementoTotalHabitos.textContent = totalHabitos;
+  if (elementoCompletados) elementoCompletados.textContent = habitosCompletados;
+};
+
+// ============================================================================
+// FUNCIONES DE CREACIÓN DE ELEMENTOS
+// ============================================================================
+
+const crearBoton = (clase, icono, titulo) => {
+  const boton = document.createElement('button');
+  boton.className = `btn-accion ${clase}`;
+  boton.innerHTML = icono;
+  boton.title = titulo;
+  return boton;
+};
+
+const crearElementosHabito = (habito) => {
+  // Contenedor principal del contenido
+  const contenedorContenido = document.createElement('div');
+  contenedorContenido.className = 'habito-contenido';
+  
+  // Nombre del hábito (span)
+  const nombreSpan = document.createElement('span');
+  nombreSpan.className = 'habito-nombre';
+  nombreSpan.textContent = habito.nombre;
+  
+  // Input para edición
+  const inputEditar = document.createElement('input');
+  inputEditar.type = 'text';
+  inputEditar.className = 'habito-input-editar';
+  inputEditar.value = habito.nombre;
+  
+  contenedorContenido.appendChild(nombreSpan);
+  contenedorContenido.appendChild(inputEditar);
+  
+  return { contenedorContenido, nombreSpan, inputEditar };
+};
+
+const crearBotonesAccion = (habito) => {
+  const contenedorAcciones = document.createElement('div');
+  contenedorAcciones.className = 'habito-acciones';
+  
+  // Botón de completar/check
+  const iconoCheck = habito.completadoHoy 
+    ? '<i class="fas fa-check-circle"></i>' 
+    : '<i class="far fa-circle"></i>';
+  const botonCheck = crearBoton('btn-check', iconoCheck, 'Marcar como completado');
+  if (habito.completadoHoy) {
+    botonCheck.classList.add('completado');
+  }
+  
+  // Botones de acción
+  const botonEditar = crearBoton('btn-editar', '<i class="fas fa-edit"></i>', 'Editar hábito');
+  const botonGuardar = crearBoton('btn-guardar', '<i class="fas fa-save"></i>', 'Guardar cambios');
+  const botonCancelar = crearBoton('btn-cancelar', '<i class="fas fa-times"></i>', 'Cancelar edición');
+  const botonEliminar = crearBoton('btn-eliminar', '<i class="fas fa-trash"></i>', 'Eliminar hábito');
+  
+  // Agregar botones al contenedor
+  contenedorAcciones.appendChild(botonCheck);
+  contenedorAcciones.appendChild(botonEditar);
+  contenedorAcciones.appendChild(botonGuardar);
+  contenedorAcciones.appendChild(botonCancelar);
+  contenedorAcciones.appendChild(botonEliminar);
+  
+  return {
+    contenedorAcciones,
+    botonCheck,
+    botonEditar,
+    botonGuardar,
+    botonCancelar,
+    botonEliminar
+  };
+};
+
+const configurarEventosHabito = (habito, elementos, botones) => {
+  const { nombreSpan, inputEditar } = elementos;
+  const { botonCheck, botonEditar, botonGuardar, botonCancelar, botonEliminar } = botones;
+  
+  // Evento: Marcar como completado
+  botonCheck.addEventListener('click', (evento) => {
+    evento.stopPropagation();
+    alternarEstadoCompletado(habito.id);
+  });
+  
+  // Evento: Iniciar edición
+  botonEditar.addEventListener('click', (evento) => {
+    evento.stopPropagation();
+    iniciarEdicion(habito.id, nombreSpan, inputEditar, botonEditar, botonEliminar, botonGuardar, botonCancelar);
+  });
+  
+  // Evento: Guardar edición
+  botonGuardar.addEventListener('click', (evento) => {
+    evento.stopPropagation();
+    guardarEdicion(habito.id, inputEditar.value, nombreSpan, inputEditar, botonEditar, botonEliminar, botonGuardar, botonCancelar);
+  });
+  
+  // Evento: Cancelar edición
+  botonCancelar.addEventListener('click', (evento) => {
+    evento.stopPropagation();
+    cancelarEdicion(nombreSpan, inputEditar, botonEditar, botonEliminar, botonGuardar, botonCancelar);
+  });
+  
+  // Evento: Eliminar hábito
+  botonEliminar.addEventListener('click', (evento) => {
+    evento.stopPropagation();
+    mostrarModalEliminar(habito.id, habito.nombre);
+  });
+  
+  // Evento: Guardar con Enter
+  inputEditar.addEventListener('keypress', (evento) => {
+    if (evento.key === 'Enter') {
+      guardarEdicion(habito.id, inputEditar.value, nombreSpan, inputEditar, botonEditar, botonEliminar, botonGuardar, botonCancelar);
+    }
+  });
+};
+
+// ============================================================================
+// FUNCIÓN PRINCIPAL DE RENDERIZADO
+// ============================================================================
+
+const renderizarHabitos = () => {
   const contenedor = document.querySelector("#lista-de-habitos");
   const estadoVacio = document.getElementById('estado-vacio');
   
@@ -22,7 +160,7 @@ const renderizar_habito = () => {
   
   contenedor.innerHTML = "";
   
-  // Mostrar/ocultar estado vacío
+  // Mostrar/ocultar mensaje de lista vacía
   if (habitos.length === 0) {
     if (estadoVacio) estadoVacio.classList.add('show');
     actualizarEstadisticas();
@@ -31,339 +169,259 @@ const renderizar_habito = () => {
     if (estadoVacio) estadoVacio.classList.remove('show');
   }
   
+  // Renderizar cada hábito
   habitos.forEach((habito) => {
-    const li = document.createElement("li");
-    li.dataset.id = habito.id;
+    const itemLista = document.createElement("li");
+    itemLista.dataset.id = habito.id;
     
-    // Contenedor del contenido del hábito
-    const habitoContenido = document.createElement('div');
-    habitoContenido.className = 'habito-contenido';
+    // Crear elementos del hábito
+    const elementos = crearElementosHabito(habito);
+    const botones = crearBotonesAccion(habito);
     
-    // Nombre del hábito (texto normal)
-    const nombreSpan = document.createElement('span');
-    nombreSpan.className = 'habito-nombre';
-    nombreSpan.textContent = habito.nombre;
+    // Configurar eventos
+    configurarEventosHabito(habito, elementos, botones);
     
-    // Input para editar (oculto por defecto)
-    const inputEditar = document.createElement('input');
-    inputEditar.type = 'text';
-    inputEditar.className = 'habito-input-editar';
-    inputEditar.value = habito.nombre;
+    // Ensamblar el item
+    itemLista.appendChild(elementos.contenedorContenido);
+    itemLista.appendChild(botones.contenedorAcciones);
     
-    habitoContenido.appendChild(nombreSpan);
-    habitoContenido.appendChild(inputEditar);
-    
-    // Contenedor de acciones
-    const accionesDiv = document.createElement('div');
-    accionesDiv.className = 'habito-acciones';
-    
-    // Botón de check/completar
-    const btnCheck = document.createElement('button');
-    btnCheck.className = 'btn-accion btn-check';
-    btnCheck.innerHTML = habito.completadoHoy ? '<i class="fas fa-check-circle"></i>' : '<i class="far fa-circle"></i>';
-    btnCheck.title = 'Marcar como completado';
+    // Marcar como completado si corresponde
     if (habito.completadoHoy) {
-      btnCheck.classList.add('completado');
+      itemLista.classList.add("habito-completado");
     }
     
-    // Botón de editar
-    const btnEditar = document.createElement('button');
-    btnEditar.className = 'btn-accion btn-editar';
-    btnEditar.innerHTML = '<i class="fas fa-edit"></i>';
-    btnEditar.title = 'Editar hábito';
-    
-    // Botón de eliminar
-    const btnEliminar = document.createElement('button');
-    btnEliminar.className = 'btn-accion btn-eliminar';
-    btnEliminar.innerHTML = '<i class="fas fa-trash"></i>';
-    btnEliminar.title = 'Eliminar hábito';
-    
-    // Botón de guardar edición (oculto por defecto)
-    const btnGuardar = document.createElement('button');
-    btnGuardar.className = 'btn-accion btn-guardar';
-    btnGuardar.innerHTML = '<i class="fas fa-save"></i>';
-    btnGuardar.title = 'Guardar cambios';
-    
-    // Botón de cancelar edición (oculto por defecto)
-    const btnCancelar = document.createElement('button');
-    btnCancelar.className = 'btn-accion btn-cancelar';
-    btnCancelar.innerHTML = '<i class="fas fa-times"></i>';
-    btnCancelar.title = 'Cancelar edición';
-    
-    // Agregar botones a acciones
-    accionesDiv.appendChild(btnCheck);
-    accionesDiv.appendChild(btnEditar);
-    accionesDiv.appendChild(btnGuardar);
-    accionesDiv.appendChild(btnCancelar);
-    accionesDiv.appendChild(btnEliminar);
-    
-    // Agregar contenido y acciones al li
-    li.appendChild(habitoContenido);
-    li.appendChild(accionesDiv);
-
-    if (habito.completadoHoy === true) {
-      li.classList.add("habito-completado");
-    }
-    
-    // Evento para marcar como completado
-    btnCheck.addEventListener('click', (e) => {
-      e.stopPropagation();
-      alternarCompletado(parseInt(habito.id));
-    });
-    
-    // Evento para editar
-    btnEditar.addEventListener('click', (e) => {
-      e.stopPropagation();
-      iniciarEdicion(habito.id, nombreSpan, inputEditar, btnEditar, btnEliminar, btnGuardar, btnCancelar);
-    });
-    
-    // Evento para eliminar
-    btnEliminar.addEventListener('click', (e) => {
-      e.stopPropagation();
-      mostrarModalEliminar(habito.id, habito.nombre);
-    });
-    
-    // Evento para guardar edición
-    btnGuardar.addEventListener('click', (e) => {
-      e.stopPropagation();
-      guardarEdicion(habito.id, inputEditar.value, nombreSpan, inputEditar, btnEditar, btnEliminar, btnGuardar, btnCancelar);
-    });
-    
-    // Evento para cancelar edición
-    btnCancelar.addEventListener('click', (e) => {
-      e.stopPropagation();
-      cancelarEdicion(nombreSpan, inputEditar, btnEditar, btnEliminar, btnGuardar, btnCancelar);
-    });
-    
-    // Permitir guardar con Enter en el input
-    inputEditar.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        guardarEdicion(habito.id, inputEditar.value, nombreSpan, inputEditar, btnEditar, btnEliminar, btnGuardar, btnCancelar);
-      }
-    });
-
-    contenedor.appendChild(li);
+    contenedor.appendChild(itemLista);
   });
   
   actualizarEstadisticas();
 };
 
-const formulario = document.querySelector("#formulario-nuevo-habito");
+// ============================================================================
+// FUNCIONES DE GESTIÓN DE HÁBITOS - AGREGAR
+// ============================================================================
 
-if (formulario) {
+const agregarNuevoHabito = (nombreHabito) => {
+  const nuevoHabito = {
+    id: Date.now(),
+    nombre: nombreHabito,
+    completadoHoy: false,
+    fechaCreacion: new Date().toISOString(),
+  };
+
+  habitos.push(nuevoHabito);
+  guardarHabitos();
+  renderizarHabitos();
+};
+
+const mostrarFeedbackExito = (elemento) => {
+  elemento.style.borderColor = 'var(--verde-principal)';
+  setTimeout(() => {
+    elemento.style.borderColor = 'transparent';
+  }, 1000);
+};
+
+const inicializarFormulario = () => {
+  const formulario = document.querySelector("#formulario-nuevo-habito");
+  
+  if (!formulario) return;
+  
   formulario.addEventListener("submit", (evento) => {
     evento.preventDefault();
+    
     const inputNombre = document.querySelector("#nombre-habito");
-    const nombre = inputNombre.value.trim();
-    if (nombre) {
-      const nuevoHabito = {
-        id: Date.now(),
-        nombre: nombre,
-        completadoHoy: false,
-        fechaCreacion: new Date().toISOString(),
-      };
-
-      habitos.push(nuevoHabito);
-      guardarHabitos();
-      renderizar_habito();
+    const nombreHabito = inputNombre.value.trim();
+    
+    if (nombreHabito) {
+      agregarNuevoHabito(nombreHabito);
       inputNombre.value = "";
-      
-      // Animación de éxito
-      inputNombre.style.borderColor = 'var(--verde-principal)';
-      setTimeout(() => {
-        inputNombre.style.borderColor = 'transparent';
-      }, 1000);
+      mostrarFeedbackExito(inputNombre);
     }
   });
-}
+};
 
-// Funciones para editar hábitos
-const iniciarEdicion = (id, nombreSpan, inputEditar, btnEditar, btnEliminar, btnGuardar, btnCancelar) => {
-  // Cancelar cualquier edición previa
+// ============================================================================
+// FUNCIONES DE GESTIÓN DE HÁBITOS - EDITAR
+// ============================================================================
+
+const cancelarEdicionPrevia = () => {
+  if (!habitoEnEdicion) return;
+  
+  const itemAnterior = document.querySelector(`li[data-id="${habitoEnEdicion}"]`);
+  if (!itemAnterior) return;
+  
+  const nombreSpan = itemAnterior.querySelector('.habito-nombre');
+  const inputEditar = itemAnterior.querySelector('.habito-input-editar');
+  const botonEditar = itemAnterior.querySelector('.btn-editar');
+  const botonEliminar = itemAnterior.querySelector('.btn-eliminar');
+  const botonGuardar = itemAnterior.querySelector('.btn-guardar');
+  const botonCancelar = itemAnterior.querySelector('.btn-cancelar');
+  
+  cancelarEdicion(nombreSpan, inputEditar, botonEditar, botonEliminar, botonGuardar, botonCancelar);
+};
+
+const toggleModoEdicion = (nombreSpan, inputEditar, botonEditar, botonEliminar, botonGuardar, botonCancelar, activar) => {
+  if (activar) {
+    nombreSpan.classList.add('editando');
+    inputEditar.classList.add('activo');
+    inputEditar.focus();
+    inputEditar.select();
+    
+    botonEditar.style.display = 'none';
+    botonEliminar.style.display = 'none';
+    botonGuardar.classList.add('activo');
+    botonCancelar.classList.add('activo');
+  } else {
+    nombreSpan.classList.remove('editando');
+    inputEditar.classList.remove('activo');
+    
+    botonEditar.style.display = 'flex';
+    botonEliminar.style.display = 'flex';
+    botonGuardar.classList.remove('activo');
+    botonCancelar.classList.remove('activo');
+  }
+};
+
+const iniciarEdicion = (id, nombreSpan, inputEditar, botonEditar, botonEliminar, botonGuardar, botonCancelar) => {
   if (habitoEnEdicion && habitoEnEdicion !== id) {
-    const liAnterior = document.querySelector(`li[data-id="${habitoEnEdicion}"]`);
-    if (liAnterior) {
-      const spanAnterior = liAnterior.querySelector('.habito-nombre');
-      const inputAnterior = liAnterior.querySelector('.habito-input-editar');
-      const btnEditarAnterior = liAnterior.querySelector('.btn-editar');
-      const btnEliminarAnterior = liAnterior.querySelector('.btn-eliminar');
-      const btnGuardarAnterior = liAnterior.querySelector('.btn-guardar');
-      const btnCancelarAnterior = liAnterior.querySelector('.btn-cancelar');
-      
-      cancelarEdicion(spanAnterior, inputAnterior, btnEditarAnterior, btnEliminarAnterior, btnGuardarAnterior, btnCancelarAnterior);
-    }
+    cancelarEdicionPrevia();
   }
   
   habitoEnEdicion = id;
-  
-  // Ocultar nombre y mostrar input
-  nombreSpan.classList.add('editando');
-  inputEditar.classList.add('activo');
-  inputEditar.focus();
-  inputEditar.select();
-  
-  // Ocultar botones de editar y eliminar
-  btnEditar.style.display = 'none';
-  btnEliminar.style.display = 'none';
-  
-  // Mostrar botones de guardar y cancelar
-  btnGuardar.classList.add('activo');
-  btnCancelar.classList.add('activo');
+  toggleModoEdicion(nombreSpan, inputEditar, botonEditar, botonEliminar, botonGuardar, botonCancelar, true);
 };
 
-const guardarEdicion = (id, nuevoNombre, nombreSpan, inputEditar, btnEditar, btnEliminar, btnGuardar, btnCancelar) => {
-  const nombreTrim = nuevoNombre.trim();
+const guardarEdicion = (id, nuevoNombre, nombreSpan, inputEditar, botonEditar, botonEliminar, botonGuardar, botonCancelar) => {
+  const nombreLimpio = nuevoNombre.trim();
   
-  if (nombreTrim === '') {
+  if (!nombreLimpio) {
     alert('El nombre del hábito no puede estar vacío');
     inputEditar.focus();
     return;
   }
   
-  // Buscar y actualizar el hábito
-  const habitoIndex = habitos.findIndex(h => h.id === id);
-  if (habitoIndex !== -1) {
-    habitos[habitoIndex].nombre = nombreTrim;
+  const indiceHabito = habitos.findIndex(habito => habito.id === id);
+  
+  if (indiceHabito !== -1) {
+    habitos[indiceHabito].nombre = nombreLimpio;
     guardarHabitos();
-    
-    // Actualizar el texto
-    nombreSpan.textContent = nombreTrim;
-    
-    // Salir del modo edición
-    cancelarEdicion(nombreSpan, inputEditar, btnEditar, btnEliminar, btnGuardar, btnCancelar);
+    nombreSpan.textContent = nombreLimpio;
+    cancelarEdicion(nombreSpan, inputEditar, botonEditar, botonEliminar, botonGuardar, botonCancelar);
     
     // Feedback visual
-    const li = document.querySelector(`li[data-id="${id}"]`);
-    if (li) {
-      li.style.borderColor = 'var(--verde-principal)';
-      setTimeout(() => {
-        li.style.borderColor = 'transparent';
-      }, 1000);
+    const itemLista = document.querySelector(`li[data-id="${id}"]`);
+    if (itemLista) {
+      mostrarFeedbackExito(itemLista);
     }
   }
   
   habitoEnEdicion = null;
 };
 
-const cancelarEdicion = (nombreSpan, inputEditar, btnEditar, btnEliminar, btnGuardar, btnCancelar) => {
-  // Restaurar el input al valor original
+const cancelarEdicion = (nombreSpan, inputEditar, botonEditar, botonEliminar, botonGuardar, botonCancelar) => {
   const id = inputEditar.closest('li').dataset.id;
   const habito = habitos.find(h => h.id == id);
+  
   if (habito) {
     inputEditar.value = habito.nombre;
   }
   
-  // Mostrar nombre y ocultar input
-  nombreSpan.classList.remove('editando');
-  inputEditar.classList.remove('activo');
-  
-  // Mostrar botones de editar y eliminar
-  btnEditar.style.display = 'flex';
-  btnEliminar.style.display = 'flex';
-  
-  // Ocultar botones de guardar y cancelar
-  btnGuardar.classList.remove('activo');
-  btnCancelar.classList.remove('activo');
-  
+  toggleModoEdicion(nombreSpan, inputEditar, botonEditar, botonEliminar, botonGuardar, botonCancelar, false);
   habitoEnEdicion = null;
 };
 
-// Funciones para eliminar hábitos
-const mostrarModalEliminar = (id, nombre) => {
+// ============================================================================
+// FUNCIONES DE GESTIÓN DE HÁBITOS - ELIMINAR
+// ============================================================================
+
+const mostrarModalEliminar = (id, nombreHabito) => {
   habitoAEliminar = id;
-  const modal = document.getElementById('modal-eliminar');
-  const nombreHabito = document.getElementById('nombre-habito-eliminar');
   
-  if (modal && nombreHabito) {
-    nombreHabito.textContent = `"${nombre}"`;
+  const modal = document.getElementById('modal-eliminar');
+  const elementoNombre = document.getElementById('nombre-habito-eliminar');
+  
+  if (modal && elementoNombre) {
+    elementoNombre.textContent = `"${nombreHabito}"`;
     modal.classList.add('show');
   }
 };
 
 const cerrarModalEliminar = () => {
   const modal = document.getElementById('modal-eliminar');
+  
   if (modal) {
     modal.classList.remove('show');
   }
+  
   habitoAEliminar = null;
 };
 
-const eliminarHabito = () => {
-  if (habitoAEliminar !== null) {
-    habitos = habitos.filter(h => h.id !== habitoAEliminar);
-    guardarHabitos();
-    renderizar_habito();
-    cerrarModalEliminar();
-    
-    // Mostrar feedback
-    console.log('Hábito eliminado correctamente');
-  }
+const confirmarEliminarHabito = () => {
+  if (habitoAEliminar === null) return;
+  
+  habitos = habitos.filter(habito => habito.id !== habitoAEliminar);
+  guardarHabitos();
+  renderizarHabitos();
+  cerrarModalEliminar();
 };
 
-// Event listeners para el modal
-const btnConfirmarEliminar = document.getElementById('btn-confirmar-eliminar');
-const btnCancelarEliminar = document.getElementById('btn-cancelar-eliminar');
-const modalOverlay = document.getElementById('modal-eliminar');
-
-if (btnConfirmarEliminar) {
-  btnConfirmarEliminar.addEventListener('click', eliminarHabito);
-}
-
-if (btnCancelarEliminar) {
-  btnCancelarEliminar.addEventListener('click', cerrarModalEliminar);
-}
-
-if (modalOverlay) {
-  modalOverlay.addEventListener('click', (e) => {
-    if (e.target === modalOverlay) {
+const inicializarModalEliminar = () => {
+  const botonConfirmar = document.getElementById('btn-confirmar-eliminar');
+  const botonCancelar = document.getElementById('btn-cancelar-eliminar');
+  const modal = document.getElementById('modal-eliminar');
+  
+  if (botonConfirmar) {
+    botonConfirmar.addEventListener('click', confirmarEliminarHabito);
+  }
+  
+  if (botonCancelar) {
+    botonCancelar.addEventListener('click', cerrarModalEliminar);
+  }
+  
+  if (modal) {
+    modal.addEventListener('click', (evento) => {
+      if (evento.target === modal) {
+        cerrarModalEliminar();
+      }
+    });
+  }
+  
+  // Cerrar con tecla Escape
+  document.addEventListener('keydown', (evento) => {
+    if (evento.key === 'Escape') {
       cerrarModalEliminar();
     }
   });
-}
-
-// Cerrar modal con tecla Escape
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    cerrarModalEliminar();
-  }
-});
-
-const alternarCompletado = (id) => {
-  // 1. Recorremos el array para encontrar el hábito por su ID
-  const habitoIndex = habitos.findIndex((habito) => habito.id === id);
-
-  if (habitoIndex !== -1) {
-    // 2. Invertir el valor booleano 'completadoHoy'
-    habitos[habitoIndex].completadoHoy = !habitos[habitoIndex].completadoHoy;
-
-    // 3. Actualizar fecha si se completó
-    if (habitos[habitoIndex].completadoHoy) {
-      habitos[habitoIndex].fechaCompletado = new Date().toISOString();
-    }
-
-    // 4. Persistencia: Guardar el cambio inmediatamente
-    guardarHabitos();
-
-    // 5. Actualizar la interfaz para que se refleje la clase CSS
-    renderizar_habito();
-  }
 };
 
-const guardarHabitos = () => {
-  // JSON.stringify() convierte el array de JS en una cadena
-  localStorage.setItem("misHabitosApp", JSON.stringify(habitos));
-};
+// ============================================================================
+// FUNCIONES DE GESTIÓN DE HÁBITOS - COMPLETAR
+// ============================================================================
 
-const cargarHabitos = () => {
-  const dataGuardada = localStorage.getItem("misHabitosApp");
-
-  // Si hay datos, los parseamos (convertimos la cadena JSON de vuelta a array de JS)
-  if (dataGuardada) {
-    // Esto sobreescribe tu array inicial
-    habitos = JSON.parse(dataGuardada);
+const alternarEstadoCompletado = (id) => {
+  const indiceHabito = habitos.findIndex(habito => habito.id === id);
+  
+  if (indiceHabito === -1) return;
+  
+  habitos[indiceHabito].completadoHoy = !habitos[indiceHabito].completadoHoy;
+  
+  if (habitos[indiceHabito].completadoHoy) {
+    habitos[indiceHabito].fechaCompletado = new Date().toISOString();
   }
+  
+  guardarHabitos();
+  renderizarHabitos();
 };
 
-// Cargar hábitos al iniciar
-cargarHabitos();
-renderizar_habito();
+// ============================================================================
+// INICIALIZACIÓN DE LA APLICACIÓN
+// ============================================================================
+
+const inicializarApp = () => {
+  cargarHabitos();
+  renderizarHabitos();
+  inicializarFormulario();
+  inicializarModalEliminar();
+};
+
+// Ejecutar cuando el DOM esté listo
+inicializarApp();
