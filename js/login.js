@@ -84,10 +84,12 @@ const iniciarSesion = (email, password, recordar) => {
     const usuario = {
       email: email,
       nombre: 'Usuario Demo',
-      fechaLogin: new Date().toISOString()
+      fechaLogin: new Date().toISOString(),
+      activo: true
     };
     
     localStorage.setItem('usuarioActual', JSON.stringify(usuario));
+    localStorage.setItem('usuarioActivo', 'true');
     
     if (recordar) {
       localStorage.setItem('recordarSesion', 'true');
