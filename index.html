@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./css/normalize.css" />
+    <link rel="stylesheet" href="./styles/normalize.css" />
     <link rel="stylesheet" href="styles/styles.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -20,19 +20,15 @@
   </head>
   <body>
     <header class="header">
-      <div class="contenedor">
-        <h1 class="text-center titulo-principal">HAD<span>BITOS</span></h1>
-        <img src="/img/logo.png" alt="" />
+      <div class="contenedor header-contenido">
+        <h1 class="titulo-principal">HAD<span>BITOS</span></h1>
+        <nav class="navbar">
+          <a href="#">Inicio</a>
+          <a href="./pages/sobre_la_app.html">Sobre la app</a>
+          <a href="./pages/login.html">Iniciar sesión</a>
+        </nav>
       </div>
     </header>
-
-    <div class="contenedor-navegacion">
-      <nav class="navbar contenedor">
-        <li><a href="#">Inicio</a></li>
-        <li><a href="./pages/sobre_la_app.html">Sobre la app</a></li>
-        <li><a href="./pages/login.html">Iniciar sesión</a></li>
-      </nav>
-    </div>
 
     <div class="hero">
       <div class="div-hero">
@@ -186,5 +182,7 @@
         </p>
       </div>
     </footer>
+
+    <script src="js/animacion.js"></script>
   </body>
 </html>
