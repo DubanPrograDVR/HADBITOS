@@ -1,0 +1,531 @@
+/* SOBRE LA APP - ESTILOS MODERNOS */
+
+.main-sobre {
+  background: var(--fondo-claro);
+}
+
+/* HERO SECTION */
+.hero-sobre {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 8rem 0 6rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-sobre::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+  pointer-events: none;
+}
+
+.hero-content {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.hero-icon {
+  width: 10rem;
+  height: 10rem;
+  margin: 0 auto 2rem;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  animation: float 3s ease-in-out infinite;
+}
+
+.hero-icon i {
+  font-size: 5rem;
+  color: white;
+}
+
+.hero-title {
+  font-size: 5rem;
+  font-weight: 900;
+  color: white;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.hero-subtitle {
+  font-size: 2rem;
+  color: rgba(255, 255, 255, 0.95);
+  max-width: 70rem;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* QUÉ ES HADBITOS */
+.seccion-que-es {
+  padding: 6rem 0;
+  background: white;
+}
+
+.content-card {
+  max-width: 90rem;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 2.5rem;
+  padding: 5rem;
+  box-shadow: var(--sombra-grande);
+  border: 1px solid rgba(16, 185, 129, 0.1);
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.card-icon {
+  width: 8rem;
+  height: 8rem;
+  margin: 0 auto 3rem;
+  background: linear-gradient(
+    135deg,
+    var(--verde-principal),
+    var(--azul-acento)
+  );
+  border-radius: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+}
+
+.card-icon i {
+  font-size: 4rem;
+  color: white;
+}
+
+.content-card h2 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  text-align: center;
+  background: linear-gradient(
+    135deg,
+    var(--color-primario),
+    var(--azul-acento)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 3rem;
+}
+
+.descripcion-principal {
+  font-size: 1.8rem;
+  line-height: 1.8;
+  color: var(--color-secundario);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* CARACTERÍSTICAS */
+.seccion-caracteristicas {
+  padding: 6rem 0;
+  background: linear-gradient(
+    135deg,
+    rgba(102, 126, 234, 0.05),
+    rgba(118, 75, 162, 0.05)
+  );
+}
+
+.titulo-seccion {
+  font-size: 3.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  color: var(--color-primario);
+}
+
+.titulo-seccion i {
+  font-size: 3rem;
+  background: linear-gradient(
+    135deg,
+    var(--verde-principal),
+    var(--azul-acento)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.grid-caracteristicas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(32rem, 1fr));
+  gap: 3rem;
+}
+
+.caracteristica-card {
+  background: white;
+  border-radius: 2rem;
+  padding: 3.5rem;
+  box-shadow: var(--sombra-media);
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.caracteristica-card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--sombra-grande);
+  border-color: var(--verde-principal);
+}
+
+.caracteristica-icono {
+  width: 7rem;
+  height: 7rem;
+  background: linear-gradient(
+    135deg,
+    var(--verde-principal),
+    var(--azul-acento)
+  );
+  border-radius: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+}
+
+.caracteristica-icono i {
+  font-size: 3rem;
+  color: white;
+}
+
+.caracteristica-card h3 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--color-primario);
+  margin-bottom: 1.5rem;
+}
+
+.caracteristica-card p {
+  font-size: 1.6rem;
+  line-height: 1.7;
+  color: var(--color-secundario);
+  margin: 0;
+}
+
+/* CÓMO FUNCIONA */
+.seccion-como-funciona {
+  padding: 6rem 0;
+  background: white;
+}
+
+.pasos-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr));
+  gap: 4rem;
+  margin-top: 5rem;
+}
+
+.paso-item {
+  display: flex;
+  gap: 2rem;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.paso-numero {
+  width: 6rem;
+  height: 6rem;
+  min-width: 6rem;
+  background: linear-gradient(
+    135deg,
+    var(--verde-principal),
+    var(--azul-acento)
+  );
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: white;
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+}
+
+.paso-content h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-primario);
+  margin-bottom: 1rem;
+}
+
+.paso-content p {
+  font-size: 1.6rem;
+  line-height: 1.7;
+  color: var(--color-secundario);
+  margin: 0;
+}
+
+/* POR QUÉ HADBITOS */
+.seccion-porque {
+  padding: 6rem 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+}
+
+.seccion-porque::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+  pointer-events: none;
+}
+
+.porque-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 2.5rem;
+  padding: 5rem;
+  box-shadow: var(--sombra-grande);
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.porque-card h2 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--color-primario);
+  margin-bottom: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.porque-card h2 i {
+  font-size: 3rem;
+  color: #ef4444;
+}
+
+.razones-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr));
+  gap: 3rem;
+}
+
+.razon-item {
+  text-align: center;
+  padding: 2rem;
+}
+
+.razon-item i {
+  font-size: 4rem;
+  background: linear-gradient(
+    135deg,
+    var(--verde-principal),
+    var(--azul-acento)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1.5rem;
+  display: block;
+}
+
+.razon-item h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-primario);
+  margin-bottom: 1rem;
+}
+
+.razon-item p {
+  font-size: 1.6rem;
+  line-height: 1.6;
+  color: var(--color-secundario);
+  margin: 0;
+}
+
+/* CTA FINAL */
+.seccion-cta {
+  padding: 8rem 0;
+  background: white;
+}
+
+.cta-card {
+  max-width: 80rem;
+  margin: 0 auto;
+  text-align: center;
+  background: linear-gradient(
+    135deg,
+    rgba(16, 185, 129, 0.1),
+    rgba(59, 130, 246, 0.1)
+  );
+  border-radius: 2.5rem;
+  padding: 6rem 4rem;
+  border: 2px solid var(--verde-principal);
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.cta-card h2 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  background: linear-gradient(
+    135deg,
+    var(--color-primario),
+    var(--azul-acento)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 2rem;
+}
+
+.cta-card p {
+  font-size: 1.8rem;
+  line-height: 1.7;
+  color: var(--color-secundario);
+  margin-bottom: 3rem;
+}
+
+.btn-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.8rem 4rem;
+  background: linear-gradient(
+    135deg,
+    var(--verde-principal),
+    var(--azul-acento)
+  );
+  color: white;
+  font-size: 1.8rem;
+  font-weight: 700;
+  border-radius: 1.5rem;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+  transition: all 0.3s ease;
+}
+
+.btn-cta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(16, 185, 129, 0.5);
+}
+
+.btn-cta i {
+  font-size: 2rem;
+}
+
+/* ANIMACIONES */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 3.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.7rem;
+  }
+
+  .content-card {
+    padding: 3rem 2rem;
+  }
+
+  .titulo-seccion {
+    font-size: 2.8rem;
+  }
+
+  .grid-caracteristicas {
+    grid-template-columns: 1fr;
+  }
+
+  .pasos-container {
+    grid-template-columns: 1fr;
+  }
+
+  .razones-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cta-card {
+    padding: 4rem 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-sobre {
+    padding: 5rem 0 4rem;
+  }
+
+  .hero-title {
+    font-size: 2.8rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.5rem;
+  }
+
+  .hero-icon {
+    width: 8rem;
+    height: 8rem;
+  }
+
+  .hero-icon i {
+    font-size: 4rem;
+  }
+
+  .titulo-seccion {
+    font-size: 2.2rem;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .content-card h2 {
+    font-size: 2.5rem;
+  }
+
+  .caracteristica-card {
+    padding: 2.5rem;
+  }
+
+  .btn-cta {
+    padding: 1.5rem 3rem;
+    font-size: 1.6rem;
+  }
+}
+
+/* Ajuste del footer */
+.main-sobre ~ .footer {
+  margin-top: 0;
+}
