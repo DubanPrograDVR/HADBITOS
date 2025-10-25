@@ -60,7 +60,11 @@
 
 .titulo-seccion i {
   font-size: 3rem;
-  background: linear-gradient(135deg, var(--verde-principal), var(--azul-acento));
+  background: linear-gradient(
+    135deg,
+    var(--verde-principal),
+    var(--azul-acento)
+  );
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -89,17 +93,27 @@
 .perfil-avatar {
   display: flex;
   justify-content: center;
+  align-items: center;
   margin-bottom: 3rem;
 }
 
 .perfil-avatar img {
   width: 15rem;
   height: 15rem;
+  min-width: 15rem;
+  min-height: 15rem;
   border-radius: 50%;
   object-fit: cover;
-  border: 5px solid transparent;
-  background: linear-gradient(white, white) padding-box, linear-gradient(135deg, var(--verde-principal), var(--azul-acento), var(--purpura-acento)) border-box;
+  border: 5px solid white;
+  padding: 0.5rem;
+  background: linear-gradient(
+    135deg,
+    var(--verde-principal),
+    var(--azul-acento),
+    var(--purpura-acento)
+  );
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  display: block;
 }
 
 .perfil-datos {
@@ -112,11 +126,15 @@
   font-size: 3.2rem;
   font-weight: 700;
   text-align: center;
-  background: linear-gradient(135deg, var(--color-primario), var(--azul-acento));
+  background: linear-gradient(
+    135deg,
+    var(--color-primario),
+    var(--azul-acento)
+  );
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 1rem;
+  margin: 0 0 1rem 0;
 }
 
 .dato-item {
@@ -124,7 +142,11 @@
   align-items: center;
   gap: 2rem;
   padding: 2rem;
-  background: linear-gradient(135deg, rgba(249, 250, 251, 0.8), rgba(243, 244, 246, 0.8));
+  background: linear-gradient(
+    135deg,
+    rgba(249, 250, 251, 0.8),
+    rgba(243, 244, 246, 0.8)
+  );
   border-radius: 1.5rem;
   transition: all 0.3s ease;
   border: 2px solid transparent;
@@ -141,8 +163,14 @@
   font-size: 2.5rem;
   width: 5rem;
   height: 5rem;
+  min-width: 5rem;
+  min-height: 5rem;
   border-radius: 1.2rem;
-  background: linear-gradient(135deg, var(--verde-principal), var(--azul-acento));
+  background: linear-gradient(
+    135deg,
+    var(--verde-principal),
+    var(--azul-acento)
+  );
   display: flex;
   align-items: center;
   justify-content: center;
@@ -201,6 +229,8 @@
   .perfil-avatar img {
     width: 12rem;
     height: 12rem;
+    min-width: 12rem;
+    min-height: 12rem;
   }
   .nombre-usuario {
     font-size: 2.8rem;
@@ -236,6 +266,8 @@
   .perfil-avatar img {
     width: 10rem;
     height: 10rem;
+    min-width: 10rem;
+    min-height: 10rem;
   }
   .nombre-usuario {
     font-size: 2.4rem;
@@ -244,5 +276,12 @@
     font-size: 2rem;
     width: 4.5rem;
     height: 4.5rem;
+    min-width: 4.5rem;
+    min-height: 4.5rem;
   }
+}
+
+/* Ajuste del footer para página de perfil */
+.main-perfil ~ .footer {
+  margin-top: 0;
 }
